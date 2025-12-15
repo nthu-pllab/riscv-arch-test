@@ -518,6 +518,7 @@ pack:
     - IZbkb
     - IZkn
     - IZks
+    - IP
   formattype: 'rformat'
   rs1_op_data: *all_regs
   rs2_op_data: *all_regs
@@ -12923,7 +12924,7 @@ pli.h:
   isa: 
     - IPZicsr
   formattype: 'uformat'
-  imm_val_data: 'gen_usign_dataset(10)+ gen_sp_dataset(10,False)'
+  imm_val_data: 'gen_sign_dataset(10)'
   template: |-
 
     // $comment
@@ -12940,7 +12941,7 @@ pli.b:
   isa: 
     - IPZicsr
   formattype: 'uformat'
-  imm_val_data: 'gen_usign_dataset(8)+ gen_sp_dataset(8,False)'
+  imm_val_data: 'gen_sign_dataset(8) + gen_usign_dataset(8)'
   template: |-
 
     // $comment
@@ -12957,7 +12958,7 @@ pli.w:
   isa: 
     - IPZicsr
   formattype: 'uformat'
-  imm_val_data: 'gen_usign_dataset(10)+ gen_sp_dataset(10,False)'
+  imm_val_data: 'gen_sign_dataset(10)'
   template: |-
 
     // $comment
@@ -13085,7 +13086,7 @@ plui.h:
   isa: 
     - IPZicsr
   formattype: 'uformat'
-  imm_val_data: 'gen_usign_dataset(10)+ gen_sp_dataset(10,False)'
+  imm_val_data: 'gen_sign_dataset(10)'
   template: |-
 
     // $comment
@@ -13102,7 +13103,7 @@ plui.w:
   isa: 
     - IPZicsr
   formattype: 'uformat'
-  imm_val_data: 'gen_usign_dataset(10)+ gen_sp_dataset(10,False)'
+  imm_val_data: 'gen_sign_dataset(10)'
   template: |-
 
     // $comment
@@ -14297,7 +14298,7 @@ psub.h:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-pdif.h:
+pabd.h:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -14378,7 +14379,7 @@ pasub.h:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-pdifu.h:
+pabdu.h:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -14663,7 +14664,7 @@ psub.b:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-pdif.b:
+pabd.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -14765,7 +14766,7 @@ pasub.b:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-pdifu.b:
+pabdu.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -15311,7 +15312,7 @@ pmulu.h.b01:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-pdifsumu.b:
+pabdsumu.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -15345,7 +15346,7 @@ pdifsumu.b:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-pdifsumau.b:
+pabdsumau.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -15455,6 +15456,31 @@ mvmn:
     TEST_RD_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rd_val, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
 srx:
+  sig:
+    stride: 1
+    sz: 'XLEN/8'
+  xlen: [32,64]
+  std_op:
+  isa: 
+    - IPZicsr
+  bit_width: 32
+  formattype: 'pwrdrrformat'
+  rs1_op_data: *all_regs
+  rs2_op_data: *all_regs
+  rd_op_data: *all_regs
+  rs1_w0_val_data: 'gen_sign_dataset(32)'
+  rs1_w1_val_data: 'gen_sign_dataset(32)'
+  rs2_w0_val_data: 'gen_sign_dataset(32)'
+  rs2_w1_val_data: 'gen_sign_dataset(32)'
+  rd_w0_val_data: 'gen_sign_dataset(32)'
+  rd_w1_val_data: 'gen_sign_dataset(32)'
+  template: |-
+
+    // $comment
+    // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
+    TEST_RD_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rd_val, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
+
+slx:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -16112,21 +16138,26 @@ ssh1sadd:
   sig:
     stride: 1
     sz: 'XLEN/8'
-  xlen: [32]
+  xlen: [32,64]
   std_op:
   isa: 
     - IPZicsr
-  formattype: 'rformat'
+  bit_width: 32
+  formattype: 'pwrdrrformat'
   rs1_op_data: *all_regs
   rs2_op_data: *all_regs
   rd_op_data: *all_regs
-  rs1_val_data: 'gen_sign_dataset(xlen) + gen_bitmanip_dataset(xlen,True)'
-  rs2_val_data: 'gen_sign_dataset(xlen) + gen_bitmanip_dataset(xlen,True)'
+  rs1_w0_val_data: 'gen_sign_dataset(32)'
+  rs1_w1_val_data: 'gen_sign_dataset(32)'
+  rs2_w0_val_data: 'gen_sign_dataset(32)'
+  rs2_w1_val_data: 'gen_sign_dataset(32)'
+  rd_w0_val_data: 'gen_sign_dataset(32)'
+  rd_w1_val_data: 'gen_sign_dataset(32)'
   template: |-
 
     // $comment
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
-    TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
+    TEST_RD_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rd_val, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
 pssh1sadd.w:
   sig:
@@ -17217,7 +17248,7 @@ pmaccsu.w.h11:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-ppack.h:
+ppaire.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -17244,7 +17275,7 @@ ppack.h:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-ppackbt.h:
+ppaireo.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -17271,7 +17302,7 @@ ppackbt.h:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-ppacktb.h:
+ppairoe.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -17298,7 +17329,7 @@ ppacktb.h:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-ppackt.h:
+ppairo.b:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -17325,14 +17356,14 @@ ppackt.h:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-packbt:
+ppaireo.w:
   sig:
     stride: 1
     sz: 'XLEN/8'
   rs1_op_data: *all_regs
   rs2_op_data: *all_regs
   rd_op_data: *all_regs
-  xlen: [32,64]
+  xlen: [64]
   std_op:
   isa: 
     - IPZicsr
@@ -17345,14 +17376,14 @@ packbt:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-packtb:
+ppairoe.w:
   sig:
     stride: 1
     sz: 'XLEN/8'
   rs1_op_data: *all_regs
   rs2_op_data: *all_regs
   rd_op_data: *all_regs
-  xlen: [32,64]
+  xlen: [64]
   std_op:
   isa: 
     - IPZicsr
@@ -17365,14 +17396,14 @@ packtb:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-packt:
+ppairo.w:
   sig:
     stride: 1
     sz: 'XLEN/8'
   rs1_op_data: *all_regs
   rs2_op_data: *all_regs
   rd_op_data: *all_regs
-  xlen: [32,64]
+  xlen: [64]
   std_op:
   isa: 
     - IPZicsr
@@ -17386,7 +17417,7 @@ packt:
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
 
-ppack.w:
+ppaire.h:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -17409,11 +17440,11 @@ ppack.w:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-ppackbt.w:
+ppaireo.h:
   sig:
     stride: 1
     sz: 'XLEN/8'
-  xlen: [64]
+  xlen: [32,64]
   std_op:
   isa: 
    - IPZicsr
@@ -17432,11 +17463,11 @@ ppackbt.w:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-ppacktb.w:
+ppairoe.h:
   sig:
     stride: 1
     sz: 'XLEN/8'
-  xlen: [64]
+  xlen: [32,64]
   std_op:
   isa: 
    - IPZicsr
@@ -17455,11 +17486,11 @@ ppacktb.w:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val;  op2val:$rs2_val
     TEST_RR_OP($inst, $rd, $rs1, $rs2, $correctval, $rs1_val, $rs2_val, $swreg, $offset, $testreg)
 
-ppackt.w:
+ppairo.h:
   sig:
     stride: 1
     sz: 'XLEN/8'
-  xlen: [64]
+  xlen: [32,64]
   std_op:
   isa: 
    - IPZicsr
@@ -25922,8 +25953,7 @@ psub.dh:
     // $comment
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
-
-pdif.dh:
+pabd.dh:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -26007,7 +26037,7 @@ pasub.dh:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-pdifu.dh:
+pabdu.dh:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -26546,8 +26576,7 @@ psub.db:
     // $comment
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
-
-pdif.db:
+pabd.db:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -26655,7 +26684,7 @@ pasub.db:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-pdifu.db:
+pabdu.db:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -26911,7 +26940,7 @@ pssh1sadd.dw:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-ppack.dh:
+ppaire.db:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -26939,7 +26968,7 @@ ppack.dh:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-ppackbt.dh:
+ppaireo.db:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -26967,7 +26996,7 @@ ppackbt.dh:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-ppacktb.dh:
+ppairoe.db:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -26995,7 +27024,7 @@ ppacktb.dh:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-ppackt.dh:
+ppairo.db:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -27388,7 +27417,7 @@ pasa.dhx:
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
 
-ppack.dw:
+ppaire.dh:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -27416,7 +27445,7 @@ ppack.dw:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-ppackbt.dw:
+ppaireo.dh:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -27444,7 +27473,7 @@ ppackbt.dw:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-ppacktb.dw:
+ppairoe.dh:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -27472,7 +27501,7 @@ ppacktb.dw:
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
 
-ppackt.dw:
+ppairo.dh:
   sig:
     stride: 1
     sz: 'XLEN/8'
@@ -27835,4 +27864,3 @@ pmaxu.db:
     // $comment
     // opcode: $inst ; op1:$rs1; op2:$rs2; dest:$rd; op1val:$rs1_val; immval:$imm_val
     TEST_PAIR_PPP_OP($inst, $rd, $rd_hi, $rs1, $rs1_hi, $rs2, $rs2_hi, $correctval, $correctval_hi, $rs1_val, $rs1_val_hi, $rs2_val, $rs2_val_hi, $swreg, $offset, $testreg)
-

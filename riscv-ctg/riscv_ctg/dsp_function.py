@@ -1,3 +1,5 @@
+import re
+
 def simd_val_vars(operand, xlen, bit_width):
     '''
     This function generates the operand value variables for SIMD elements of the given operand.
